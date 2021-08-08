@@ -1,0 +1,24 @@
+# Ignore Build directory
+build/
+logs/
+node_modules/
+distribute/
+yarn-error.log 
+test-results.xml
+
+# Binaries
+*.dll
+*.lib
+*.pdb
+*.node
+
+# IDE Files
+*.sln
+*.vcxproj
+*.opendb
+docs/ 
+.vscode 
+/*.log
+/streamlabs-build
+
+tests/osn-tests/*-cache-local.zip
