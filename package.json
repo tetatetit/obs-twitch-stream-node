@@ -1,6 +1,6 @@
 {
   "name": "@berezins/obs-twitch-stream-node",
-  "version": "0.1.1",
+  "version": "0.1.3",
   "description": "Simplest node native module example that streams to Twitch via libobs with just a single function call",
   "author": "Serhiy Berezin <berezins@gmail.com>",
   "license": "GPL-2.0",
@@ -14,6 +14,7 @@
   "homepage": "https://github.com/tetatetit/obs-twitch-stream-node#readme",
   "main": "./index.js",
   "scripts": {
+    "build:bindings": "cmake-js configure -a x64 --CDCMAKE_PREFIX_INSTALL=distribute && cmake --build build --target install --config Release",
     "local:config": "yarn install && cmake -Bbuild -H. -G\"Visual Studio 16 2019\" -A\"x64\" -DCMAKE_INSTALL_PREFIX=\"./obs-studio-node\" -DLIBOBS_BUILD_TYPE=\"debug\"",
     "local:build": "cmake --build build --target install --config Debug",
     "local:clean": "rm -rf build/*"

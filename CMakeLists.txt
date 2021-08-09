@@ -35,8 +35,6 @@ if(MSVC)
 	add_definitions(/debug:fastlink)
 endif()
 
-include(CPack)
-
 PROJECT(obs_twitch_stream_node VERSION ${obs-twitch-stream-node_VERSION})
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -122,3 +120,33 @@ target_compile_definitions(
 		UNICODE
 		_UNICODE
 )
+
+install(FILES $<TARGET_PDB_FILE:obs_twitch_stream_node> DESTINATION ./ OPTIONAL)
+install(FILES "${CMAKE_SOURCE_DIR}/package.json" DESTINATION "./")
+install(
+	DIRECTORY "${PROJECT_SOURCE_DIR}/js/"
+	DESTINATION "./"
+	PATTERN "*.json" EXCLUDE
+)
+install(
+	TARGETS obs_twitch_stream_node
+	RUNTIME DESTINATION "./" COMPONENT Runtime
+	LIBRARY DESTINATION "./" COMPONENT Runtime
+	ARCHIVE DESTINATION "./" COMPONENT Runtime	
+)
+install(DIRECTORY "${libobs_SOURCE_DIR}/data/" DESTINATION "./data" USE_SOURCE_PERMISSIONS)
+install(
+	DIRECTORY "${libobs_SOURCE_DIR}/bin/64bit/"
+	DESTINATION "./" PATTERN "*.lib" EXCLUDE
+)
+install(
+	DIRECTORY "${libobs_SOURCE_DIR}/bin/"
+	DESTINATION "./" USE_SOURCE_PERMISSIONS PATTERN "*.lib" EXCLUDE
+)
+install(
+	DIRECTORY "${libobs_SOURCE_DIR}/obs-plugins/"
+	DESTINATION "./obs-plugins"
+)
+install(DIRECTORY "${libobs_SOURCE_DIR}/enc-amf_old" DESTINATION "./" OPTIONAL)
+
+include(CPack)
