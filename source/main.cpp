@@ -27,9 +27,17 @@
 
 int main(int, char ** , char **){}
 
+void obsBroadcast(const Napi::CallbackInfo& info) {
+    printf("obs_twitch_stream_node: obsBroadcast called\n");
+}
+
 Napi::Object main_node(Napi::Env env, Napi::Object exports) {
-	obs_reset_audio(NULL);	
-	return exports;
+    printf("obs_twitch_stream_node: Module init called\n");
+    exports.Set(
+        Napi::String::New(env, "obsBroadcast"),
+        Napi::Function::New(env, obsBroadcast)
+    );
+    return exports;
 };
 
 NODE_API_MODULE(obs_twitch_stream_node, main_node);
