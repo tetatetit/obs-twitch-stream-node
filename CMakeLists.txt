@@ -2,9 +2,6 @@
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-
 set(VERSION_FULL 0.1.1)
 set(VERSION_BUILD 0)
 
@@ -36,16 +33,10 @@ if(MSVC)
 endif()
 
 PROJECT(obs_twitch_stream_node VERSION ${obs-twitch-stream-node_VERSION})
-set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 SET(NODEJS_URL "https://atom.io/download/atom-shell" CACHE STRING "Node.JS URL")
 SET(NODEJS_NAME "iojs" CACHE STRING "Node.JS Name")
 SET(NODEJS_VERSION "v10.4.2" CACHE STRING "Node.JS Version")
-
-# Resource VersionInfo
-set(PROJECT_PRODUCT_NAME "OBS Studio for Node.JS (Server)")
-set(PROJECT_COPYRIGHT "Streamlabs © 2017 - 2018")
 
 configure_file(
 	${obs-twitch-stream-node_SOURCE_DIR}/cmake/version.rc.in
