@@ -56,28 +56,7 @@ add_nodejs_module(
 	"source/main.cpp"
 )
 
-set(PROJECT_INCLUDE_PATHS
-	${LIBOBS_INCLUDE_DIRS}
-)
-
-download_project(
-	PROJ libobs
-	URL "https://obsstudios3.streamlabs.com/libobs-windows64-release-27.1.1.7z"
-	UPDATE_DISCONNECTED 1
-)
-
 include("${libobs_SOURCE_DIR}/cmake/LibObs/LibObsConfig.cmake")
-
-target_sources(obs_twitch_stream_node PUBLIC ${PROJECT_BINARY_DIR}/version.rc)
-target_link_libraries(obs_twitch_stream_node ${LIBOBS_LIBRARIES})
-
-
-target_include_directories(
-	obs_twitch_stream_node
-	PUBLIC
-		"${CMAKE_SOURCE_DIR}/source/"
-		${PROJECT_INCLUDE_PATHS}
-)
 
 # Include N-API wrappers
 execute_process(COMMAND node -p "require('node-addon-api').include"
@@ -86,32 +65,39 @@ execute_process(COMMAND node -p "require('node-addon-api').include"
         )
 string(REPLACE "\n" "" NODE_ADDON_API_DIR ${NODE_ADDON_API_DIR})
 string(REPLACE "\"" "" NODE_ADDON_API_DIR ${NODE_ADDON_API_DIR})
-target_include_directories(${PROJECT_NAME} PRIVATE ${NODE_ADDON_API_DIR})
-target_link_libraries(${PROJECT_NAME} ${LIBOBS_LIBRARIES})
 
 # Define NAPI_VERSION
 add_definitions(-DNAPI_VERSION=4)
 
-#Define the OSN_VERSION
-add_compile_definitions(OSN_VERSION=\"$ENV{tagartifact}\") 
 set_target_properties(
-	obs_twitch_stream_node
+	${PROJECT_NAME}
 	PROPERTIES
 	VERSION ${PROJECT_VERSION}
 	SOVERSION ${PROJECT_VERSION}
 	PREFIX "" SUFFIX ".node"
 )
 
-target_compile_definitions(obs_twitch_stream_node PRIVATE BUILDING_NODE_EXTENSION)
-
-target_compile_definitions(
-	obs_twitch_stream_node
+target_link_libraries(${PROJECT_NAME} ${LIBOBS_LIBRARIES})
+target_sources(${PROJECT_NAME} PUBLIC ${PROJECT_BINARY_DIR}/version.rc)
+target_include_directories(
+	${PROJECT_NAME}
 	PRIVATE
+		${NODE_ADDON_API_DIR}
+	PUBLIC
+		"${CMAKE_SOURCE_DIR}/source/"
+		${LIBOBS_INCLUDE_DIRS}
+)
+target_compile_definitions(
+	${PROJECT_NAME}
+	PRIVATE
+		BUILDING_NODE_EXTENSION
 		WIN32_LEAN_AND_MEAN
 		NOMINMAX
 		UNICODE
 		_UNICODE
 )
+
+# Installation
 
 install(FILES $<TARGET_PDB_FILE:obs_twitch_stream_node> DESTINATION ./ OPTIONAL)
 install(FILES "${CMAKE_SOURCE_DIR}/package.json" DESTINATION "./")
